@@ -129,7 +129,8 @@ func isSameObject(node *ast.TypeSpec, targetName string) bool {
 func SwitchImportFilePath(f *ast.File, expr *ast.SelectorExpr) string {
 	if name, ok := expr.X.(*ast.Ident); ok {
 		for i, _ := range f.Imports {
-			if f.Imports[i].Name.Name == name.Name {
+			base := strings.ReplaceAll(filepath.Base(f.Imports[i].Path.Value), "\"", "")
+			if (f.Imports[i].Name != nil && f.Imports[i].Name.Name == name.Name) || (base == name.Name) {
 				path, err := utils.SwitchImportPathToPath(f.Imports[i].Path.Value)
 				if err != nil {
 					panic(err)
@@ -174,9 +175,11 @@ func TraversalFile(path, objName string) []*ast.Field {
 							// different package different file
 							importPath := SwitchImportFilePath(ff, ft)
 							importPath = strings.ReplaceAll(importPath, "\"", "")
-							tf := TraversalAstDir(ft.Sel.Name, importPath, "")
-							if tf != "" {
-								fields = append(fields, TraversalFile(tf, ft.Sel.Name)...)
+							if importPath != "" {
+								tf := TraversalAstDir(ft.Sel.Name, importPath, "")
+								if tf != "" {
+									fields = append(fields, TraversalFile(tf, ft.Sel.Name)...)
+								}
 							}
 						}
 					}
