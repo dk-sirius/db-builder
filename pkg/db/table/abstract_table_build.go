@@ -29,7 +29,7 @@ import (
 							********\ *ast.FieldList
 								*********\ *[]ast.Field
 									**********\ []*ast.Ident (Names)
-									**********\ ast.Expr     (Type)
+									**********\ ast.Expr     (SqlType)
 									**********\ *ast.BasicLit (Tag)
 									**********\ ...
 				*****\ *ast.FuncType
@@ -195,11 +195,11 @@ func TraversalFile(path, objName string) []*ast.Field {
 }
 
 // PickConstraintDef table constraint from doc
-func PickConstraintDef(doc *ast.CommentGroup) []*ConstraintDef {
+func PickConstraintDef(doc *ast.CommentGroup) []*DocPlaceHolderDef {
 	if doc != nil && len(doc.List) > 0 {
-		cs := make([]*ConstraintDef, 0)
+		cs := make([]*DocPlaceHolderDef, 0)
 		for i, _ := range doc.List {
-			def := AstConstraintDef(doc.List[i].Text).Constraint()
+			def := AstHolderPlaceDef(doc.List[i].Text).Constraint()
 			if def != nil {
 				cs = append(cs, def)
 			}
@@ -210,9 +210,9 @@ func PickConstraintDef(doc *ast.CommentGroup) []*ConstraintDef {
 }
 
 // PickIndexDef table index
-func PickIndexDef(doc *ast.CommentGroup) []*TableIndexDef {
+func PickIndexDef(doc *ast.CommentGroup) []*IndexDef {
 	if doc != nil && len(doc.List) > 0 {
-		cs := make([]*TableIndexDef, 0)
+		cs := make([]*IndexDef, 0)
 		for i, _ := range doc.List {
 			def := AstIndexDef(doc.List[i].Text).Index()
 			if def != nil {
@@ -225,9 +225,9 @@ func PickIndexDef(doc *ast.CommentGroup) []*TableIndexDef {
 }
 
 // PickFieldDef table filed
-func PickFieldDef(fields ...*ast.Field) []*TableFieldDef {
+func PickFieldDef(fields ...*ast.Field) []*FieldDef {
 	if fields != nil {
-		tf := make([]*TableFieldDef, 0)
+		tf := make([]*FieldDef, 0)
 		for _, field := range fields {
 			if ftp, ok := field.Type.(*ast.Ident); ok {
 				if field.Tag != nil {

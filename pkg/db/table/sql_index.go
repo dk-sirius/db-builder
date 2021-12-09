@@ -7,7 +7,7 @@ import (
 	"github.com/dk-sirius/db-builder/pkg/db/token"
 )
 
-type SqlTableIndexDef TableIndexDef
+type SqlIndexDef IndexDef
 
 type IndexCursor uint8
 
@@ -17,7 +17,7 @@ const (
 	IndexCursorFields                    // 索引映射字段
 )
 
-func (in SqlTableIndexDef) String() string {
+func (in SqlIndexDef) String() string {
 	index := [...]string{
 		IndexCursorClass:  in.conv(),
 		IndexCursorName:   in.DefName,
@@ -26,7 +26,7 @@ func (in SqlTableIndexDef) String() string {
 	return strings.Join(index[0:], "$")
 }
 
-func (in SqlTableIndexDef) conv() string {
+func (in SqlIndexDef) conv() string {
 	def := ""
 	switch token.Lookup(in.DefClass) {
 	case token.Unique:
@@ -40,7 +40,7 @@ func (in SqlTableIndexDef) conv() string {
 	return def
 }
 
-func (in SqlTableIndexDef) Index() [3]string {
+func (in SqlIndexDef) Index() [3]string {
 	return [...]string{
 		IndexCursorClass:  in.conv(),
 		IndexCursorName:   in.DefName,
@@ -48,7 +48,7 @@ func (in SqlTableIndexDef) Index() [3]string {
 	}
 }
 
-func (in SqlTableIndexDef) IsUnique(class string) bool {
+func (in SqlIndexDef) IsUnique(class string) bool {
 	if class != "" {
 		return class == token.Unique.String()
 	}

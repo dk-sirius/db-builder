@@ -19,10 +19,7 @@ const (
 	Primary
 	Size
 	ValueDefault
-
-	ddlSequenceBeg
 	AutoIncr
-	ddlSequenceEnd
 	ddlCheckEnd
 )
 
@@ -54,7 +51,7 @@ var keywords map[string]DbToken
 
 func init() {
 	keywords = make(map[string]DbToken)
-	for i := ddlKeyBeg + 1; i < ddlCheckEnd-1; i++ {
+	for i := ddlKeyBeg + 1; i < ddlCheckEnd; i++ {
 		keywords[dTokens[i]] = i
 	}
 }
@@ -72,8 +69,4 @@ func (tok DbToken) IsKeyWord() bool {
 
 func (tok DbToken) IsFieldCheck() bool {
 	return ddlCheckBeg < tok && tok < ddlCheckEnd
-}
-
-func (tok DbToken) IsSequenceCheck() bool {
-	return ddlSequenceBeg < tok && tok < ddlSequenceEnd
 }

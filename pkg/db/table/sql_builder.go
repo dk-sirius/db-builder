@@ -1,19 +1,19 @@
 package table
 
-type TableSqlBuild struct {
+type SqlBuilder struct {
 	dbName    string // database name
 	tableName string // target database table name
 	filePath  string // database table description file path
 }
 
-func NewTableSqlBuild(dbName, tableName, filePath string) *TableSqlBuild {
-	return &TableSqlBuild{
+func NewSqlBuilder(dbName, tableName, filePath string) *SqlBuilder {
+	return &SqlBuilder{
 		dbName:    dbName,
 		tableName: tableName,
 		filePath:  filePath,
 	}
 }
 
-func (t *TableSqlBuild) Build() *TableSql {
-	return NewTableSql(t.dbName, t.tableName, Def(t.filePath))
+func (t *SqlBuilder) Build() *SqlSchema {
+	return NewSqlSchema(t.dbName, t.tableName, Def(t.filePath))
 }

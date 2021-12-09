@@ -1,14 +1,14 @@
 package table
 
 import (
-	"fmt"
+	"reflect"
 	"strings"
 
 	"github.com/dk-sirius/db-builder/pkg/db/token"
 )
 
-// TableFieldDef table field define
-type TableFieldDef struct {
+// FieldDef table field define
+type FieldDef struct {
 	// 字段类型
 	DefType string
 	// 字段名称
@@ -20,24 +20,20 @@ type TableFieldDef struct {
 // AstFieldDef example `db:"name,size=10,default='0'"`
 type AstFieldDef string
 
-// just `db` and remove `db`、`"`
 func (s AstFieldDef) String() string {
 	tmp := string(s)
-	if tmp != "" && strings.Contains(tmp, token.Db.String()) {
-		tmp = strings.ReplaceAll(tmp, "`", "")
-		tag := strings.Split(tmp, ":")
-		if len(tag) != 2 {
-			panic(fmt.Sprintf("%s is a illegal field define", tmp))
-		}
-		return strings.ReplaceAll(tag[1], "\"", "")
+	tmp = strings.ReplaceAll(tmp, "`", "")
+	tag := reflect.StructTag(tmp)
+	if v, ok := tag.Lookup(token.Db.String()); ok {
+		return v
 	}
 	return ""
 }
 
-func (s AstFieldDef) Field() *TableFieldDef {
+func (s AstFieldDef) Field() *FieldDef {
 	tmp := s.String()
 	if tmp != "" {
-		field := &TableFieldDef{}
+		field := &FieldDef{}
 		field.DefName = tmp
 		// exist desc
 		ins := strings.Split(tmp, ",")

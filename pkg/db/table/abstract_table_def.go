@@ -18,9 +18,9 @@ type DBTableDef struct {
 	// file name of picked
 	Name string
 	// all valid field define
-	FieldDef []*TableFieldDef
+	FieldDef []*FieldDef
 	// all valid table index define
-	IndexDef []*TableIndexDef
+	IndexDef []*IndexDef
 	// all valid doc constraint define
-	ConstraintDef []*ConstraintDef
+	ConstraintDef []*DocPlaceHolderDef
 }

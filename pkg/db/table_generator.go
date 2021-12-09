@@ -20,7 +20,7 @@ func Generate(dbName, tableName, srcPath string) {
 		srcPath = path
 	}
 
-	def := table.NewTableSqlBuild(dbName, tableName, srcPath).Build()
+	def := table.NewSqlBuilder(dbName, tableName, srcPath).Build()
 	if def != nil {
 		sql := def.CreateTable()
 		if sql != "" {

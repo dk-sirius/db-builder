@@ -16,6 +16,7 @@ type TableGoFileGenerator struct {
 	fieldKey            []string
 	uniqueIndexFieldKey []map[string]string
 	indexFieldKey       []map[string]string
+	autoFieldKey        map[string]bool
 }
 
 func TableGenerator(pkg, desc, obj string, tableInfo func() *table.Analysis) *TableGoFileGenerator {
@@ -28,6 +29,7 @@ func TableGenerator(pkg, desc, obj string, tableInfo func() *table.Analysis) *Ta
 		fieldKey:            info.FieldKey,
 		uniqueIndexFieldKey: info.UniqueIndexFieldKey,
 		indexFieldKey:       info.IndexFieldKey,
+		autoFieldKey:        info.AutoFieldKey,
 	}
 }
 
@@ -48,7 +50,6 @@ func (gen *TableGoFileGenerator) PName() string {
 }
 func (gen *TableGoFileGenerator) IValues() []string {
 	return []string{
-		"strings",
 		"database/sql",
 		"github.com/jmoiron/sqlx",
 	}

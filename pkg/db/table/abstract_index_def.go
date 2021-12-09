@@ -6,8 +6,8 @@ import (
 	"github.com/dk-sirius/db-builder/pkg/db/token"
 )
 
-// TableIndexDef table index define
-type TableIndexDef struct {
+// IndexDef table index define
+type IndexDef struct {
 	// 索引名称
 	DefName string
 	// 索引类别
@@ -31,13 +31,13 @@ func (s AstIndexDef) String() string {
 	return ""
 }
 
-// Index switch to TableIndexDef
-func (s AstIndexDef) Index() *TableIndexDef {
+// Index switch to IndexDef
+func (s AstIndexDef) Index() *IndexDef {
 	tmp := s.String()
 	if tmp != "" {
 		ins := strings.Split(tmp, " ")
 		if len(ins) >= 3 {
-			return &TableIndexDef{
+			return &IndexDef{
 				DefClass:        ins[0],
 				DefName:         ins[1],
 				DefRelativeName: ins[2:],
