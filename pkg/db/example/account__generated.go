@@ -1,7 +1,10 @@
 package example
 
-import "database/sql"
-import "github.com/jmoiron/sqlx"
+import (
+	"database/sql"
+
+	"github.com/jmoiron/sqlx"
+)
 
 var _account = `CREATE TABLE IF NOT EXISTS t_account ( f_deep bigint NOT NULL DEFAULT '0',created_time bigint NOT NULL DEFAULT '0',updated_time bigint NOT NULL DEFAULT '0',delete_time bigint NOT NULL DEFAULT '0',f_name varchar(50) NOT NULL DEFAULT '',f_password text NOT NULL,f_userID bigint NOT NULL,f_nick_name varchar(90) NOT NULL DEFAULT '',f_id bigserial NOT NULL,PRIMARY KEY(f_id) );
 
